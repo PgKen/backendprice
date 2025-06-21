@@ -146,235 +146,72 @@ app.get("/app_maintypes", (req, res) => {
 });
 
 
-app.get("/app_getmaintypes/:id", (req, res) => {
+// app.get("/app_getmaintypes/:id", (req, res) => {
 
-  function main() {
-    get_id_icepro();
-  }
-  main();
-
-  function get_id_icepro() {
-    let sql = "SELECT * FROM `tb_priceproduct` ORDER BY `tb_priceproduct`.`id_pricepro` DESC"
-    conn.query(sql, (err, result) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false, message: "Database error" });
-      }
-      if (result.length > 0) {
-        // console.log(result[0]);
-        getListProduct(result[0].id_pricepro);
-      } else {
-        res.status(404).json({ success: false, message: "No price products found" });
-      }
-    });
-  }
-
-  function getListProduct(id) {
-    console.log("getListProduct called with ID:", id);
-    log("Fetching products for main type with ID:", req.params.id);
-
-    const idPrice = id;
-    const reqId = req.params.id;
-    if (!idPrice) {
-      console.error("No price product ID found");
-      return res.status(404).json({ success: false, message: "No price product ID found" });
-    }
-    if (reqId) {
-      log("Fetching products for main type with ID:", req.params.id);
-      // let sql = "SELECT * FROM tb_typeproduct ";
-      // sql += "INNER JOIN tb_maintype ON tb_typeproduct.id_mtype = tb_maintype.id_maintype ";
-      // sql += "LEFT JOIN tb_proselect ON tb_typeproduct.id_typepro = tb_proselect.id_typepro ";
-      // sql += "LEFT JOIN tb_product ON tb_proselect.id_prod = tb_product.id_product ";
-      // sql += "WHERE id_mtype = ? AND tb_proselect.idprice = ?";
-      // sql += " ORDER BY tb_typeproduct.id_typepro";
-
-      let sql = "SELECT * FROM tb_proselect ";
-      sql += "LEFT JOIN tb_product"
-
-      conn.query(sql, [reqId, idPrice], (err, result) => {
-        if (err) {
-          console.error("Error executing query:", err);
-          return res.status(500).json({ success: false, message: "Database error" });
-        }
-        if (result.length > 0) {
-          console.log(result[0]);
-          res.json(result);
-        } else {
-          res.status(404).json({ success: false, message: "Main type not found" });
-        }
-      });
-    } else {
-      console.log("Not !!!! Fetching products for main type with ID :", reqId);
-
-    }
-  }
-
-
-  // const id = req.params.id;
-  // log("Fetching main type with ID:", id);
-  // let sql = "SELECT * FROM tb_typeproduct ";
-  // sql += "INNER JOIN tb_maintype ON tb_typeproduct.id_mtype = tb_maintype.id_maintype ";
-  // sql += "LEFT JOIN tb_proselect ON tb_product.id_product = tb_proselect.id_prod ";
-  // sql += "WHERE id_mtype = ?";
-  // sql += " ORDER BY tb_typeproduct.id_typepro"; 
-
-
-  // conn.query(sql, [id], (err, result) => {
-  //   if (err) {
-  //     console.error("Error executing query:", err);
-  //     return res.status(500).json({ success: false, message: "Database error" });
-  //   }
-  //   if (result.length > 0) {
-  //     // console.log(result[0]);
-  //     res.json(result);
-  //   } else {
-  //     res.status(404).json({ success: false, message: "Main type not found" });
-  //   }
-  // });
-});
-
-// app.get('/dffprice', (req, res) => {
 //   function main() {
-//     get_price();
+//     get_id_icepro();
 //   }
 //   main();
 
-//   function get_price() {
+//   function get_id_icepro() {
+//     let id = req.params.id;
+//     let sql = "SELECT * FROM `tb_product` ";
+//     sql += "WHERE `id_mtype` = ? ";
+//     sql += "ORDER BY `tb_priceproduct`.`id_pricepro` DESC"
 
-
-
-//     let data = [];
-//     let sqlDate = "SELECT tb_priceproduct.date_check FROM tb_priceproduct GROUP BY tb_priceproduct.date_check "
-//     sqlDate += "ORDER BY tb_priceproduct.date_check DESC LIMIT 0, 2 "
-//     conn.query(sqlDate, (err, result) => {
+//     conn.query(sql, [id],(err, result) => {
 //       if (err) {
 //         console.error("Error executing query:", err);
 //         return res.status(500).json({ success: false, message: "Database error" });
 //       }
 //       if (result.length > 0) {
 //         // console.log(result[0]);
-//         fnDiffPrice(result);
+//         getListProduct(result[0].id_pricepro);
 //       } else {
 //         res.status(404).json({ success: false, message: "No price products found" });
 //       }
 //     });
 //   }
 
-//   function fnDiffPrice(date) {
-//     console.log("fnDiffPrice called with date:", date);
-//     res.end();
+//   function getListProduct(id) {
+//     console.log("getListProduct called with ID:", id);
+//     log("Fetching products for main type with ID:", req.params.id);
 
-//   }
+//     const idPrice = id;
+//     const reqId = req.params.id;
+//     if (!idPrice) {
+//       console.error("No price product ID found");
+//       return res.status(404).json({ success: false, message: "No price product ID found" });
+//     }
+//     if (reqId) {
+//       log("Fetching products for main type with ID:", req.params.id);
+//       // let sql = "SELECT * FROM tb_typeproduct ";
+//       // sql += "INNER JOIN tb_maintype ON tb_typeproduct.id_mtype = tb_maintype.id_maintype ";
+//       // sql += "LEFT JOIN tb_proselect ON tb_typeproduct.id_typepro = tb_proselect.id_typepro ";
+//       // sql += "LEFT JOIN tb_product ON tb_proselect.id_prod = tb_product.id_product ";
+//       // sql += "WHERE id_mtype = ? AND tb_proselect.idprice = ?";
+//       // sql += " ORDER BY tb_typeproduct.id_typepro";
 
-//   function fnDiffPrice(arrDate) {
-//     let sqlDateLast = "SELECT tb_proselect.id_prod AS rId,tb_product.name_pro,"
-//     sqlDateLast += "tb_product.name_pro_en,tb_proselect.price_pro,tb_priceproduct.date_check,"
-//     sqlDateLast += "tb_product.name_pro_cn,picture.name_img,picture.id_pro,tb_unit.id_unit,tb_unit.unitname "
-//     sqlDateLast += "FROM tb_priceproduct "
-//     sqlDateLast += "INNER JOIN tb_proselect ON tb_priceproduct.id_pricepro = tb_proselect.idprice "
-//     sqlDateLast += "INNER JOIN tb_product ON tb_proselect.id_prod = tb_product.id_product "
-//     sqlDateLast += "INNER JOIN tb_typeproduct ON tb_product.typepro = tb_typeproduct.id_typepro "
-//     sqlDateLast += "INNER JOIN picture ON tb_proselect.id_prod = picture.id_pro "
-//     sqlDateLast += "INNER JOIN tb_unit ON tb_proselect.unit = tb_unit.id_unit "
-//     sqlDateLast += "WHERE date_check = ? "
-//     /*WHERE id_mtype = 8*/
-//     /*GROUP BY
-//     tb_proselect.id_prod*/
-//     sqlDateLast += "ORDER BY tb_priceproduct.date_check DESC, RAND() ASC LIMIT 0, 16 "
+//       let sql = "SELECT * FROM tb_proselect ";
 
-//     let sql = sqlDateLast
+//       // sql += "LEFT JOIN tb_product"
 
-//     let arrDate1 = moment(arrDate[0].date_check).format("YYYY-MM-DD");
-
-//     console.log("arrDate1:", arrDate1);
-
-//     conn.query(sql, [arrDate1], (err, res) => {
-//       //console.log(resS);
-
-//       let mapdata = res.map(item => {
-//         return {
-//           ...item,
-//           date_check: moment(item.date_check).format("DD-MM-YYYY"),
+//       conn.query(sql, [reqId, idPrice], (err, result) => {
+//         if (err) {
+//           console.error("Error executing query:", err);
+//           return res.status(500).json({ success: false, message: "Database error" });
 //         }
-//       })
-//       let dataImg1 = mapdata
-//       console.log("dataImg1:", dataImg1);
-
-//       fnDiffPrice2(arrDate, dataImg1)
-//     })
-//   }
-
-//   function fnDiffPrice2(arrDate, dataImg1) {
-
-//     let sqlDateLast = "SELECT tb_proselect.id_prod AS rId,tb_product.name_pro,"
-//     sqlDateLast += "tb_product.name_pro_en,tb_proselect.price_pro,tb_priceproduct.date_check,"
-//     sqlDateLast += "tb_product.name_pro_cn,picture.name_img,picture.id_pro,tb_unit.id_unit,tb_unit.unitname "
-//     sqlDateLast += "FROM tb_priceproduct "
-//     sqlDateLast += "INNER JOIN tb_proselect ON tb_priceproduct.id_pricepro = tb_proselect.idprice "
-//     sqlDateLast += "INNER JOIN tb_product ON tb_proselect.id_prod = tb_product.id_product "
-//     sqlDateLast += "INNER JOIN tb_typeproduct ON tb_product.typepro = tb_typeproduct.id_typepro "
-//     sqlDateLast += "INNER JOIN picture ON tb_proselect.id_prod = picture.id_pro "
-//     sqlDateLast += "INNER JOIN tb_unit ON tb_proselect.unit = tb_unit.id_unit "
-//     sqlDateLast += "WHERE date_check = ? "
-//     /*WHERE id_mtype = 8*/
-//     /*GROUP BY
-//     tb_proselect.id_prod*/
-//     sqlDateLast += "ORDER BY tb_priceproduct.date_check DESC, RAND() ASC LIMIT 0, 16 "
-
-
-//     let sql = sqlDateLast;
-//     let arrDate2 = moment(arrDate[1].date_check).format("YYYY-MM-DD");
-
-//     console.log("arrDate2:", arrDate2);
-
-//     conn.query(sql, [arrDate2], (err, resp) => {
-//       //console.log(resS);
-
-//       let mapdata = resp.map(item => {
-//         return {
-//           ...item,
-//           date_check: moment(item.date_check).format("DD-MM-YYYY"),
+//         if (result.length > 0) {
+//           console.log(result[0]);
+//           res.json(result);
+//         } else {
+//           res.status(404).json({ success: false, message: "Main type not found" });
 //         }
-//       })
-
-//       let dataImg2 = mapdata
-//       res.json({
-//         dataImg1: dataImg1,
-//         dataImg2: dataImg2
 //       });
-//     })
+//     } else {
+//       console.log("Not !!!! Fetching products for main type with ID :", reqId);
+//     }
 //   }
-
-
-
-//   // function fnDiffPrice(date) {
-//   //   console.log("fnDiffPrice called with date:", date);
-//   //   if (date.length < 2) {
-//   //     return res.status(400).json({ success: false, message: "Not enough dates to compare" });
-//   //   }
-//   //   const date1 = date[0].date_check;
-//   //   const date2 = date[1].date_check;
-
-//   //   let sql = "SELECT tb_priceproduct.id_pricepro, tb_product.name_product, tb_priceproduct.price_pro, tb_priceproduct.date_check ";
-//   //   sql += "FROM tb_priceproduct ";
-//   //   sql += "INNER JOIN tb_proselect ON tb_priceproduct.id_pricepro = tb_proselect.idprice ";
-//   //   sql += "INNER JOIN tb_product ON tb_proselect.id_prod = tb_product.id_product ";
-//   //   sql += "WHERE tb_priceproduct.date_check IN (?, ?) ";
-//   //   sql += "ORDER BY tb_priceproduct.date_check DESC";
-
-//   //   conn.query(sql, [date1, date2], (err, result) => {
-//   //     if (err) {
-//   //       console.error("Error executing query:", err);
-//   //       return res.status(500).json({ success: false, message: "Database error" });
-//   //     }
-//   //     if (result.length > 0) {
-//   //       console.log(result);
-//   //       res.json(result);
-//   //     } else {
-//   //       res.status(404).json({ success: false, message: "No price products found for the given dates" });
-//   //     }
-//   //   });
-//   // }
 
 // });
 
@@ -525,12 +362,35 @@ app.get('/app_dffprice', function (req, res) {
   function sendData() {
     //console.log(dataImg1);
     //console.log(dataImg2);
-
-
-
     res.send(totalData)
   }
 });
+
+
+app.get('/app_getmaintypes/:id', (req, res) => {
+  const id = req.params.id;
+  console.log("Fetching image price for ID:", id);
+
+  let sql =  "SELECT * FROM tb_typeproduct ";
+  sql += "INNER JOIN tb_maintype ON tb_typeproduct.id_mtype = tb_maintype.id_maintype ";
+  sql += "WHERE tb_maintype.id_maintype = ? ";
+
+  conn.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ success: false, message: "Database error" });
+    }
+    if (result.length > 0) {
+      res.json(result);
+    } else {
+      res.status(404).json({ success: false, message: "No main type found for this ID" });
+    }
+  }
+  );
+
+});
+
+
 
 
 
